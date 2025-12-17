@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>STEM System Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(135deg,#0f172a,#020617);
+  font-family:Arial, Helvetica, sans-serif;
+}
+.login-box{
+  background:#ffffff;
+  width:340px;
+  padding:28px;
+  border-radius:12px;
+  box-shadow:0 15px 40px rgba(0,0,0,0.35);
+}
+.login-logo{
+  width:110px;
+  display:block;
+  margin:0 auto 10px auto;
+}
+.login-box h2{
+  text-align:center;
+  margin-bottom:18px;
+}
+select,input,button{
+  width:100%;
+  padding:11px;
+  margin:8px 0;
+  font-size:14px;
+}
+select,input{
+  border:1px solid #cbd5e1;
+  border-radius:6px;
+}
+button{
+  background:#2563eb;
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  font-weight:600;
+}
+button:hover{
+  background:#1e40af;
+}
+.error{
+  color:#dc2626;
+  font-size:13px;
+  text-align:center;
+  display:none;
+  margin-top:8px;
+}
+.note{
+  font-size:12px;
+  color:#475569;
+  margin-top:12px;
+  text-align:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <!-- LOGO -->
+  <img src="stem-logo.png" class="login-logo" alt="STEM Logo">
+
+  <h2>System Login</h2>
+
+  <select id="role">
+    <option value="">Select Role</option>
+    <option value="user">User</option>
+    <option value="admin">Admin</option>
+    <option value="maintenance">Maintenance</option>
+  </select>
+
+  <input type="text" id="id" placeholder="Enter ID (e.g. U001)">
+  <input type="password" id="pass" placeholder="Enter Password">
+
+  <button onclick="login()">Login</button>
+
+  <div id="error" class="error">Invalid ID or Password</div>
+
+  <div class="note">
+    Demo IDs:<br>
+    User → U001 | Admin → A001 | Maintenance → M001
+  </div>
+</div>
+
+<script>
+function login(){
+  const role = document.getElementById("role").value;
+  const id   = document.getElementById("id").value.trim().toUpperCase();
+  const pass = document.getElementById("pass").value.trim();
+  const err  = document.getElementById("error");
+
+  err.style.display = "none";
+
+  if(role==="" || id==="" || pass===""){
+    err.innerText = "Please fill all fields";
+    err.style.display = "block";
+    return;
+  }
+
+  // USER LOGIN
+  if(role==="user" && id==="U001" && pass==="1111"){
+    localStorage.setItem("role","user");
+    location.href="user.html";
+  }
+  // ADMIN LOGIN
+  else if(role==="admin" && id==="A001" && pass==="2222"){
+    localStorage.setItem("role","admin");
+    location.href="admin.html";
+  }
+  // MAINTENANCE LOGIN
+  else if(role==="maintenance" && id==="M001" && pass==="3333"){
+    localStorage.setItem("role","maintenance");
+    location.href="maintenance.html";
+  }
+  else{
+    err.innerText = "Invalid ID or Password";
+    err.style.display = "block";
+  }
+}
+</script>
+
+</body>
+</html>

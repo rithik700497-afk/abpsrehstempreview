@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Panel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<style>
+body{margin:0;font-family:Inter,Arial;background:#f4f6f8}
+header{background:#1f2937;color:#fff;padding:12px;display:flex;align-items:center;gap:10px}
+header button{background:#374151;color:#fff;border:none;border-radius:4px;padding:6px 10px}
+nav{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #ddd}
+nav button{flex:1;padding:10px;border:none;background:#fff;font-size:13px}
+nav button.active{border-bottom:3px solid #2563eb;color:#2563eb;font-weight:600}
+.page{display:none;padding:15px}
+.page.active{display:block}
+.card{background:#fff;padding:12px;border-radius:6px;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid #ddd;padding:6px;text-align:center}
+th{background:#f1f5f9}
+.present{color:green;font-weight:600}
+.absent{color:red;font-weight:600}
+</style>
+</head>
+
+<body>
+
+<header>
+  <button onclick="history.back()">← Back</button>
+  <h3>User Panel</h3>
+</header>
+
+<nav>
+  <button class="active" onclick="openPage('dash',this)">Dashboard</button>
+  <button onclick="openPage('att',this)">Attendance</button>
+  <button onclick="openPage('pay',this)">Payout</button>
+  <button onclick="openPage('log',this)">Log</button>
+  <button onclick="openPage('leave',this)">Leave</button>
+  <button onclick="openPage('details',this)">Details</button>
+</nav>
+
+<!-- ================= DASHBOARD ================= -->
+<div id="dash" class="page active">
+
+  <!-- TODAY STATUS -->
+  <div class="card">
+    <h4>Today Status</h4>
+    <p class="present">PRESENT</p>
+    <p>Time In: 09:02</p>
+    <p>Time Out: 18:05</p>
+  </div>
+
+  <!-- MONTHLY SUMMARY -->
+  <div class="card">
+    <h4>Monthly Summary</h4>
+    <table>
+      <tr><th>Present</th><th>Absent</th><th>Late</th></tr>
+      <tr>
+        <td class="present">22</td>
+        <td class="absent">3</td>
+        <td>4</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- PAYOUT QUICK VIEW -->
+  <div class="card">
+    <h4>Salary Overview</h4>
+    <p>Total Earned: <b>₹11,000</b></p>
+    <small>Calculated till today</small>
+  </div>
+
+</div>
+
+<!-- ================= ATTENDANCE ================= -->
+<div id="att" class="page">
+  <div class="card">
+    <h4>Attendance Sheet</h4>
+    <table>
+      <tr><th>Date</th><th>Status</th><th>Time In</th><th>Time Out</th></tr>
+      <tr><td>01-12-2025</td><td class="present">P</td><td>09:02</td><td>18:05</td></tr>
+      <tr><td>02-12-2025</td><td class="present">P</td><td>09:10</td><td>18:00</td></tr>
+      <tr><td>03-12-2025</td><td class="absent">A</td><td>-</td><td>-</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- ================= PAYOUT ================= -->
+<div id="pay" class="page">
+  <div class="card">
+    <h4>Daily Payout</h4>
+
+    <table id="payTable">
+      <tr><th>Date</th><th>Status</th><th>Amount (₹)</th></tr>
+      <tr><td>01-12-2025</td><td>P</td><td data-amt="500">500</td></tr>
+      <tr><td>02-12-2025</td><td>P</td><td data-amt="500">500</td></tr>
+      <tr><td>03-12-2025</td><td>A</td><td data-amt="0">0</td></tr>
+    </table>
+
+    <!-- PDF BOTTOM -->
+    <div style="margin-top:15px;padding-top:10px;border-top:1px dashed #ccc;text-align:center">
+      <p id="totalPay" style="font-weight:600">Total: ₹0</p>
+      <small>This is an auto-generated payroll record</small><br>
+      <button onclick="generatePDF()"
+        style="margin-top:8px;padding:10px 16px;background:#2563eb;color:#fff;border:none;border-radius:5px">
+        ⬇ Generate Payroll PDF
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= LOG ================= -->
+<div id="log" class="page">
+  <div class="card">
+    <h4>Activity Log</h4>
+    <p>01-12-2025 09:02 → Time In</p>
+    <p>01-12-2025 18:05 → Time Out</p>
+  </div>
+</div>
+
+<!-- ================= LEAVE ================= -->
+<div id="leave" class="page">
+  <div class="card">
+    <h4>Leave Application</h4>
+    <input type="date"><br><br>
+    <textarea rows="3" placeholder="Reason"></textarea><br>
+    <button>Submit</button>
+  </div>
+</div>
+
+<!-- ================= DETAILS ================= -->
+<div id="details" class="page">
+  <div class="card">
+    <h4>User Details</h4>
+    <p>Name: Ramesh Kumar</p>
+    <p>ID: W-012</p>
+    <p>Shift: Day</p>
+  </div>
+</div>
+
+<script>
+function openPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function calculateTotal(){
+  let total=0;
+  document.querySelectorAll('#payTable td[data-amt]').forEach(td=>{
+    total+=parseInt(td.dataset.amt);
+  });
+  document.getElementById('totalPay').innerText='Total: ₹'+total;
+  return total;
+}
+
+function generatePDF(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const total = calculateTotal();
+
+  doc.text('Payroll Report',10,10);
+  doc.text('Worker: Ramesh Kumar (W-012)',10,18);
+  doc.text('Generated: '+new Date().toLocaleDateString('en-GB'),10,26);
+
+  let y=36;
+  document.querySelectorAll('#payTable tr').forEach(r=>{
+    doc.text([...r.children].map(td=>td.innerText).join('   '),10,y);
+    y+=8;
+  });
+
+  doc.text('Total Pay: ₹'+total,10,y+8);
+  doc.save('Payroll.pdf');
+}
+
+calculateTotal();
+</script>
+
+</body>
+</html>

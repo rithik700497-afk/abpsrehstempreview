@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maintenance Panel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{margin:0;font-family:Inter,Arial;background:#f4f6f8;color:#222}
+header{background:#111827;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+header h1{font-size:16px;margin:0}
+header button{background:#374151;color:#fff;border:none;border-radius:4px;padding:6px 10px}
+
+nav{display:flex;overflow-x:auto;background:#fff;border-bottom:1px solid #ddd}
+nav button{flex:1;padding:10px;border:none;background:#fff;font-size:13px}
+nav button.active{border-bottom:3px solid #ef4444;color:#ef4444;font-weight:600}
+
+.page{display:none;padding:15px}
+.page.active{display:block}
+
+.card{background:#fff;padding:12px;border-radius:6px;margin-bottom:12px;box-shadow:0 1px 4px rgba(0,0,0,0.06)}
+.card h3{margin:0 0 8px 0;font-size:15px;border-bottom:1px solid #e5e7eb;padding-bottom:4px}
+
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{border:1px solid #ddd;padding:6px;text-align:center}
+th{background:#f1f5f9}
+
+.ok{color:#16a34a;font-weight:600}
+.warn{color:#d97706;font-weight:600}
+.err{color:#dc2626;font-weight:600}
+
+.btn-group{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+button.action{background:#2563eb;color:#fff;border:none;border-radius:5px;padding:10px}
+button.danger{background:#dc2626;color:#fff;border:none;border-radius:5px;padding:10px}
+
+.log{font-family:monospace;font-size:12px;background:#f9fafb;border:1px solid #ddd;padding:8px;max-height:160px;overflow-y:auto}
+
+.center{text-align:center}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🧑‍🔧 Maintenance Panel</h1>
+  <button onclick="history.back()">← Back</button>
+</header>
+
+<nav>
+  <button class="active" onclick="openPage('overview',this)">Overview</button>
+  <button onclick="openPage('components',this)">Components</button>
+  <button onclick="openPage('wifi',this)">Wi-Fi</button>
+  <button onclick="openPage('tests',this)">Tests</button>
+  <button onclick="openPage('logs',this)">Logs</button>
+  <button onclick="openPage('mode',this)">Maintenance Mode</button>
+</nav>
+
+<!-- OVERVIEW -->
+<div id="overview" class="page active">
+  <div class="card">
+    <h3>System Overview</h3>
+    <p>Device ID: <b>TERM-01</b></p>
+    <p>Firmware: v1.2.3</p>
+    <p>Uptime: 134 hrs</p>
+    <p>Server Status: <span class="err">OFFLINE</span></p>
+  </div>
+</div>
+
+<!-- COMPONENTS -->
+<div id="components" class="page">
+  <div class="card">
+    <h3>Component Status</h3>
+    <table>
+      <tr><th>Component</th><th>Status</th></tr>
+      <tr><td>RFID</td><td class="ok">OK</td></tr>
+      <tr><td>OLED</td><td class="ok">OK</td></tr>
+      <tr><td>LCD</td><td class="ok">OK</td></tr>
+      <tr><td>Buzzer</td><td class="ok">OK</td></tr>
+      <tr><td>SD Card</td><td class="warn">78% Used</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- WIFI -->
+<div id="wifi" class="page">
+
+  <div class="card">
+    <h3>Wi-Fi Info</h3>
+    <p>SSID: <b>Office_Network</b></p>
+    <p>IP: 192.168.1.20</p>
+    <p>RSSI: <span id="rssiText" class="warn">-70 dBm</span></p>
+  </div>
+
+  <div class="card center">
+    <h3>Wi-Fi Signal Strength</h3>
+    <canvas id="wifiGauge" width="220" height="140"></canvas>
+    <p style="font-size:12px;color:#555">Speedometer-style RSSI gauge</p>
+  </div>
+
+</div>
+
+<!-- TESTS -->
+<div id="tests" class="page">
+  <div class="card">
+    <h3>Hardware Tests</h3>
+    <div class="btn-group">
+      <button class="action">Test RFID</button>
+      <button class="action">Test Display</button>
+      <button class="action">Test Buzzer</button>
+      <button class="action">Test Wi-Fi</button>
+    </div>
+  </div>
+</div>
+
+<!-- LOGS -->
+<div id="logs" class="page">
+  <div class="card">
+    <h3>System Logs</h3>
+    <div class="log">
+      10:15 BOOT System Started<br>
+      10:25 ERR E503 Server Offline<br>
+      10:27 WARN Weak Wi-Fi
+    </div>
+  </div>
+</div>
+
+<!-- MODE -->
+<div id="mode" class="page">
+  <div class="card">
+    <h3>Maintenance Mode</h3>
+    <button class="danger">ENABLE MAINTENANCE MODE</button>
+    <p style="font-size:13px;color:#555">Attendance will be locked</p>
+  </div>
+</div>
+
+<script>
+function openPage(id,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+/* -------- WIFI SPEEDOMETER -------- */
+const canvas = document.getElementById("wifiGauge");
+const ctx = canvas.getContext("2d");
+
+function drawGauge(rssi){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const centerX = 110;
+  const centerY = 120;
+  const radius = 90;
+
+  // arc background
+  ctx.beginPath();
+  ctx.lineWidth = 12;
+  ctx.strokeStyle = "#e5e7eb";
+  ctx.arc(centerX, centerY, radius, Math.PI, 0);
+  ctx.stroke();
+
+  // value arc
+  let percent = (rssi + 90) / 40;   // -90 to -50
+  percent = Math.min(Math.max(percent,0),1);
+
+  ctx.beginPath();
+  ctx.strokeStyle = rssi > -60 ? "#16a34a" : rssi > -70 ? "#d97706" : "#dc2626";
+  ctx.arc(centerX, centerY, radius, Math.PI, Math.PI + percent*Math.PI);
+  ctx.stroke();
+
+  // needle
+  let angle = Math.PI + percent*Math.PI;
+  ctx.beginPath();
+  ctx.moveTo(centerX,centerY);
+  ctx.lineTo(centerX + radius*Math.cos(angle),
+             centerY + radius*Math.sin(angle));
+  ctx.strokeStyle="#111827";
+  ctx.lineWidth=2;
+  ctx.stroke();
+
+  // text
+  ctx.fillStyle="#111827";
+  ctx.font="16px Inter";
+  ctx.fillText(rssi+" dBm", centerX-28, centerY-10);
+}
+
+let currentRSSI = -70;
+let targetRSSI  = -70;
+let lastTime = performance.now();
+
+function animateGauge(time){
+  const delta = (time - lastTime) / 1000; // seconds
+  lastTime = time;
+
+  // SMOOTHING FACTOR (jitna kam, utna smooth)
+  const smoothing = 3.5; // professional dashboards ~3–5
+
+  // exponential smoothing (frame-rate independent)
+  currentRSSI += (targetRSSI - currentRSSI) * smoothing * delta;
+
+  drawGauge(currentRSSI.toFixed(1));
+  requestAnimationFrame(animateGauge);
+}
+
+// demo: update target slowly
+setInterval(()=>{
+  targetRSSI = -60 - Math.random() * 25; // -60 to -85
+  document.getElementById("rssiText").innerText =
+    targetRSSI.toFixed(1) + " dBm";
+}, 2500);
+
+// start animation
+requestAnimationFrame(animateGauge);
+
+
+drawGauge(-70);
+</script>
+
+</body>
+</html>
