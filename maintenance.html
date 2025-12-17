@@ -45,7 +45,7 @@ button.danger{background:#dc2626;color:#fff;border:none;border-radius:5px;paddin
 
 <header>
   <h1>🧑‍🔧 Maintenance Panel</h1>
-  <button onclick="logout()">← Back</button>
+  <button onclick="history.back()">← Back</button>
 </header>
 
 <nav>
@@ -186,29 +186,15 @@ function drawGauge(rssi){
   ctx.fillText(rssi+" dBm", centerX-28, centerY-10);
 }
 
-let currentRSSI = -70;
-let targetRSSI  = -70;
-
-function animateGauge(){
-  // smooth transition
-  currentRSSI += (targetRSSI - currentRSSI) * 0.05;
-
-  drawGauge(Math.round(currentRSSI));
-  requestAnimationFrame(animateGauge);
-}
-
-// change target RSSI slowly (demo)
+// demo live update
 setInterval(()=>{
-  targetRSSI = -60 - Math.floor(Math.random()*25); // new value
-  document.getElementById("rssiText").innerText = targetRSSI + " dBm";
-}, 3000);
+  let rssi = -60 - Math.floor(Math.random()*25); // demo
+  document.getElementById("rssiText").innerText = rssi+" dBm";
+  drawGauge(rssi);
+},3000);
 
-// start animation loop
-animateGauge();
-
+drawGauge(-70);
 </script>
 
 </body>
 </html>
-
-
