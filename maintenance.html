@@ -188,36 +188,27 @@ function drawGauge(rssi){
 
 let currentRSSI = -70;
 let targetRSSI  = -70;
-let lastTime = performance.now();
 
-function animateGauge(time){
-  const delta = (time - lastTime) / 1000; // seconds
-  lastTime = time;
+function animateGauge(){
+  // smooth transition
+  currentRSSI += (targetRSSI - currentRSSI) * 0.05;
 
-  // SMOOTHING FACTOR (jitna kam, utna smooth)
-  const smoothing = 3.5; // professional dashboards ~3–5
-
-  // exponential smoothing (frame-rate independent)
-  currentRSSI += (targetRSSI - currentRSSI) * smoothing * delta;
-
-  drawGauge(currentRSSI.toFixed(1));
+  drawGauge(Math.round(currentRSSI));
   requestAnimationFrame(animateGauge);
 }
 
-// demo: update target slowly
+// change target RSSI slowly (demo)
 setInterval(()=>{
-  targetRSSI = -60 - Math.random() * 25; // -60 to -85
-  document.getElementById("rssiText").innerText =
-    targetRSSI.toFixed(1) + " dBm";
-}, 2500);
+  targetRSSI = -60 - Math.floor(Math.random()*25); // new value
+  document.getElementById("rssiText").innerText = targetRSSI + " dBm";
+}, 3000);
 
-// start animation
-requestAnimationFrame(animateGauge);
+// start animation loop
+animateGauge();
 
-
-drawGauge(-70);
 </script>
 
 </body>
 </html>
+
 
