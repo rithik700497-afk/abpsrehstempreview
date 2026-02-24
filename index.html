@@ -1,137 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>STEM System Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sorry Boss 🤍</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffd6e7, #d6f0ff);
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
 
-<style>
-body{
-  margin:0;
-  height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(135deg,#0f172a,#020617);
-  font-family:Arial, Helvetica, sans-serif;
-}
-.login-box{
-  background:#ffffff;
-  width:340px;
-  padding:28px;
-  border-radius:12px;
-  box-shadow:0 15px 40px rgba(0,0,0,0.35);
-}
-.login-logo{
-  width:110px;
-  display:block;
-  margin:0 auto 10px auto;
-}
-.login-box h2{
-  text-align:center;
-  margin-bottom:18px;
-}
-select,input,button{
-  width:100%;
-  padding:11px;
-  margin:8px 0;
-  font-size:14px;
-}
-select,input{
-  border:1px solid #cbd5e1;
-  border-radius:6px;
-}
-button{
-  background:#2563eb;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:600;
-}
-button:hover{
-  background:#1e40af;
-}
-.error{
-  color:#dc2626;
-  font-size:13px;
-  text-align:center;
-  display:none;
-  margin-top:8px;
-}
-.note{
-  font-size:12px;
-  color:#475569;
-  margin-top:12px;
-  text-align:center;
-}
-</style>
+    .card {
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 400px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    h1 {
+      color: #ff4d6d;
+    }
+
+    p {
+      font-size: 18px;
+      color: #333;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      background: #ff4d6d;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #e6004c;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="login-box">
-  <!-- LOGO -->
-  <img src="stem-logo.png" class="login-logo" alt="STEM Logo">
+  <div class="card">
+    <h1>I'm Sorry Boss 🥺</h1>
+    <p>
+     Aage ka chapter padh liya… par realize hua ki baat chapter ki nahi, saath chalne ki thi.
+Promise todne ka intention nahi tha.
+Agar bura laga ho… toh genuinely sorry Boss 🤍”
+    </p>
 
-  <h2>System Login</h2>
-
-  <select id="role">
-    <option value="">Select Role</option>
-    <option value="user">User</option>
-    <option value="admin">Admin</option>
-    <option value="maintenance">Maintenance</option>
-  </select>
-
-  <input type="text" id="id" placeholder="Enter ID (e.g. U001)">
-  <input type="password" id="pass" placeholder="Enter Password">
-
-  <button onclick="login()">Login</button>
-
-  <div id="error" class="error">Invalid ID or Password</div>
-
-  <div class="note">
-    Demo IDs:<br>
-    User → U001 | Admin → A001 | Maintenance → M001
+    <button onclick="forgive()">Forgive Employee 😌</button>
   </div>
-</div>
 
-<script>
-function login(){
-  const role = document.getElementById("role").value;
-  const id   = document.getElementById("id").value.trim().toUpperCase();
-  const pass = document.getElementById("pass").value.trim();
-  const err  = document.getElementById("error");
-
-  err.style.display = "none";
-
-  if(role==="" || id==="" || pass===""){
-    err.innerText = "Please fill all fields";
-    err.style.display = "block";
-    return;
-  }
-
-  // USER LOGIN
-  if(role==="user" && id==="U001" && pass==="1111"){
-    localStorage.setItem("role","user");
-    location.href="user.html";
-  }
-  // ADMIN LOGIN
-  else if(role==="admin" && id==="A001" && pass==="2222"){
-    localStorage.setItem("role","admin");
-    location.href="admin.html";
-  }
-  // MAINTENANCE LOGIN
-  else if(role==="maintenance" && id==="M001" && pass==="3333"){
-    localStorage.setItem("role","maintenance");
-    location.href="maintenance.html";
-  }
-  else{
-    err.innerText = "Invalid ID or Password";
-    err.style.display = "block";
-  }
-}
-</script>
+  <script>
+    function forgive() {
+      alert("Thank you Boss 🤍 Employee loyal rahega hamesha ✨.");
+    }
+  </script>
 
 </body>
 </html>
