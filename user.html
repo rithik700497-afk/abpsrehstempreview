@@ -1,78 +1,145 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sorry Boss 🤍</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #ffd6e7, #d6f0ff);
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
+<title>Sorry Boss 🤍</title>
 
-    .card {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      max-width: 400px;
-      animation: fadeIn 1.5s ease-in-out;
-    }
+<style>
 
-    h1 {
-      color: #ff4d6d;
-    }
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ffd6e7, #d6f0ff);
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
 
-    p {
-      font-size: 18px;
-      color: #333;
-    }
+/* Card */
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  max-width: 420px;
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
 
-    button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 20px;
-      background: #ff4d6d;
-      color: white;
-      font-size: 16px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+/* Photo */
+img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #ff4d6d;
+  margin-bottom: 15px;
+}
 
-    button:hover {
-      background: #e6004c;
-    }
+/* Typing text */
+#text {
+  font-size: 18px;
+  color: #333;
+  min-height: 90px;
+}
 
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-  </style>
+.cursor {
+  display: inline-block;
+  width: 2px;
+  background: #ff4d6d;
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  50% {opacity: 0;}
+}
+
+/* Button */
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #ff4d6d;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #e6004c;
+}
+
+/* Floating hearts */
+.heart {
+  position: absolute;
+  bottom: -20px;
+  font-size: 18px;
+  animation: floatUp 6s linear infinite;
+  opacity: 0.6;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-110vh) scale(1.4);
+    opacity: 0;
+  }
+}
+
+</style>
 </head>
 
 <body>
 
-  <div class="card">
-    <h1>I'm Sorry Boss 🥺</h1>
-    <p>
-     Aage ka chapter padh liya… par realize hua ki baat chapter ki nahi, saath chalne ki thi.
-Promise todne ka intention nahi tha.
-Agar bura laga ho… toh genuinely sorry Boss 🤍”
-    </p>
+<!-- Hearts -->
+<div class="heart" style="left:10%; animation-delay:0s;">🤍</div>
+<div class="heart" style="left:30%; animation-delay:2s;">💗</div>
+<div class="heart" style="left:50%; animation-delay:4s;">🤍</div>
+<div class="heart" style="left:70%; animation-delay:1s;">💞</div>
+<div class="heart" style="left:90%; animation-delay:3s;">🤍</div>
 
-    <button onclick="forgive()">Forgive Employee 😌</button>
-  </div>
+<!-- Card -->
+<div class="card">
 
-  <script>
-    function forgive() {
-      alert("Thank you Boss 🤍 Employee loyal rahega hamesha ✨.");
-    }
-  </script>
+<img src="photo.jpg">
+
+<h2>I'm Sorry Boss 🥺</h2>
+
+<p id="text"></p><span class="cursor"></span>
+
+<button onclick="forgive()">Forgive Employee 😌</button>
+
+</div>
+
+<script>
+
+const message =
+"Chapter aage padh liya… par bina Boss ke padhna incomplete lagta hai 🤍\n\nPromise todne ka intention nahi tha…\nAage se saath hi progress karenge ✨";
+
+let i = 0;
+
+function type() {
+  if (i < message.length) {
+    document.getElementById("text").innerHTML +=
+      message.charAt(i) === "\n" ? "<br>" : message.charAt(i);
+    i++;
+    setTimeout(type, 40);
+  }
+}
+
+type();
+
+function forgive(){
+  alert("Thank you Boss 🤍 Employee loyal rahega hamesha!");
+}
+
+</script>
 
 </body>
 </html>
