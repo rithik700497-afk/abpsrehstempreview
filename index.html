@@ -151,37 +151,27 @@ p {
 
 <!-- Password Box -->
 <div id="loginBox">
-    <h2>Enter Password 💖</h2>
-    <input type="password" id="password" placeholder="Password daalo cutie ✨">
+    <h2>Enter Password ✨</h2>
+    <input type="password" id="password" placeholder="Password daalo  ✨">
     <br>
     <button onclick="checkPass()">Unlock 🔓</button>
 </div>
 
 <!-- Main Content -->
 <div id="mainContent">
-    <h1>Gooooooood Morninggggg 🌙✨</h1>
+    <h1>Happiest Birthday Nandani🌙✨</h1>
 
     <img src="photo2.jpg" alt="Her Photo">
 
     <p>
-        Thnkuuu so much Shammyyyyyy 💖<br><br>
-        For Being My Cutest besttttFrienddddd...
-
-        Aur sach mei…  
-        yeh main sirf smile lane ke liye nahi bol raha 🙂<br><br>
-
-        Tu bolti hai na — jo dil mei aata hai woh hi bolte hain…  
-        Bas wahi dil se bol raha hu ✨<br><br>
-
-        I really enjoy talking to you —  
-        chats mei bhi 💫 aur real life mei bhi 💫<br><br>
-
-        Promise kro 👉👈 hamesha aise hi saath rahogi…  
-        Aur agar kabhi main kuch galat bol du…  
-        pehle daant dena, bura mat maana 💕
+        Happy Birthday, Nandani! 🎂✨<br><br>
+        Meri pyaari chotu behen,
+        tu hamesha hasi se ghar ko roshan karti rahe.
+        Bhagwan kare teri har wish poori ho aur<br><br>
+        teri life pink sky jaisi beautiful ho.” 💕🌸
     </p>
 
-    <button onclick="againGN()">Click here to Accept the Promise ✨🌙</button>
+    <button onclick="againGN()">Happiest Birthday Nandaniiiiiii</button>
 
 </div>
 
@@ -189,7 +179,7 @@ p {
 
 function checkPass() {
     var pass = document.getElementById("password").value;
-    if(pass === "shammy") {
+    if(pass === "nandani") {
         document.getElementById("loginBox").style.display = "none";
         document.getElementById("mainContent").style.display = "block";
         createHearts();
@@ -199,14 +189,14 @@ function checkPass() {
 }
 
 function againGN() {
-    alert("Promise Accepted 💖\n\nGooooooood Morning Guyzzzz🌙✨\nSweet Dreams Cutieee 💕");
+    alert("happiest Birthday Nandaniiiiiii ✨✨\n\n");
 }
 
 function createHearts() {
     setInterval(() => {
         var heart = document.createElement("div");
         heart.className = "heart";
-        heart.innerHTML = "💖";
+        heart.innerHTML = "✨";
         heart.style.left = Math.random() * 100 + "vw";
         heart.style.fontSize = (Math.random() * 20 + 15) + "px";
         document.body.appendChild(heart);
@@ -221,6 +211,7 @@ function createHearts() {
 
 </body>
 </html>
+
 
 
 
