@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cart</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ background:#f5f5f5;
+}
+
+/* 🔥 HEADER */
+.top{
+ height:110px;
+ border-radius:0 0 35px 35px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:22px;
+ color:white;
+ position:relative;
+ overflow:hidden;
+
+ /* 🔥 COMBO BACKGROUND (GUARANTEED WORK) */
+ background:
+   linear-gradient(135deg, rgba(255,204,51,0.9), rgba(255,179,0,0.9)),
+   url('https://images.unsplash.com/photo-1504674900247-0877df9cc836');
+ background-size:cover;
+ background-position:center;
+}
+
+/* 🔥 PATTERN FIX */
+.top::before{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:url('https://www.transparenttextures.com/patterns/food.png');
+ background-size:300px; /* IMPORTANT */
+ opacity:0.35; /* increase visibility */
+ z-index:0; /* BELOW text */
+}
+
+/* TEXT ABOVE */
+.top span{
+ position:relative;
+ z-index:2;
+}
+
+/* MAIN */
+.container{
+ padding:15px;
+}
+
+/* CARD */
+.card{
+ background:white;
+ border-radius:20px;
+ padding:15px;
+ box-shadow:0 5px 20px rgba(0,0,0,0.1);
+ animation:fade 0.4s ease;
+}
+
+@keyframes fade{
+ from{opacity:0; transform:translateY(20px);}
+ to{opacity:1; transform:translateY(0);}
+}
+
+/* ITEM */
+.item{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ margin-bottom:18px;
+}
+
+.item img{
+ width:60px;
+ border-radius:10px;
+}
+
+.details{
+ flex:1;
+ margin-left:10px;
+}
+
+.price{
+ font-size:12px;
+ color:gray;
+}
+
+/* QTY */
+.qty{
+ display:flex;
+ gap:5px;
+}
+.qty button{
+ background:#ff3b3b;
+ color:white;
+ border:none;
+ padding:5px 10px;
+ border-radius:8px;
+}
+
+/* PROMO */
+.promo{
+ display:flex;
+ gap:10px;
+ margin:15px 0;
+}
+.promo input{
+ flex:1;
+ height:40px;
+ padding:0 10px;
+ border-radius:10px;
+ border:1px solid #ddd;
+}
+.promo button{
+ height:40px;
+ padding:0 15px;
+ background:#ff3b3b;
+ color:white;
+ border:none;
+ border-radius:10px;
+}
+
+/* BADGE */
+.badge{
+ background:#fff3cd;
+ padding:10px;
+ border-radius:10px;
+ text-align:center;
+ margin-bottom:10px;
+}
+
+/* SUMMARY */
+.summary{
+ border-top:1px solid #eee;
+ padding-top:10px;
+}
+.summary p{
+ display:flex;
+ justify-content:space-between;
+ margin:8px 0;
+}
+.summary h3{
+ display:flex;
+ justify-content:space-between;
+}
+
+/* BUTTON */
+.checkout{
+ margin-top:15px;
+ width:100%;
+ padding:15px;
+ background:#ff3b3b;
+ color:white;
+ border:none;
+ border-radius:15px;
+ font-size:16px;
+ box-shadow:0 5px 15px rgba(255,59,59,0.3);
+}
+</style>
+</head>
+
+<body>
+
+<div class="top">
+  <span>🛒 Your Cart</span>
+</div>
+
+<div class="container">
+
+<div class="card">
+
+<div id="items"></div>
+
+<div class="promo">
+<input placeholder="Promo Code">
+<button>Apply</button>
+</div>
+
+<div class="badge">
+🚀 Free delivery above ₹500
+</div>
+
+<div class="summary">
+<p>Subtotal <span id="sub"></span></p>
+<p>Delivery <span>₹20</span></p>
+<h3>Total <span id="total"></span></h3>
+</div>
+
+<button class="checkout">CHECKOUT</button>
+
+</div>
+
+</div>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || {};
+
+function render(){
+ let html="", subtotal=0;
+
+ for(let i in cart){
+  let item=cart[i];
+  subtotal += item.price * item.qty;
+
+  html += `
+  <div class="item">
+    <img src="${item.img}">
+    <div class="details">
+      <b>${i}</b><br>
+      <span class="price">₹${item.price}</span>
+    </div>
+    <div class="qty">
+      <button onclick="change('${i}',-1)">-</button>
+      ${item.qty}
+      <button onclick="change('${i}',1)">+</button>
+    </div>
+  </div>`;
+ }
+
+ document.getElementById("items").innerHTML = html;
+ document.getElementById("sub").innerText = "₹"+subtotal;
+ document.getElementById("total").innerText = "₹"+(subtotal+20);
+}
+
+function change(name,val){
+ cart[name].qty += val;
+ if(cart[name].qty <= 0) delete cart[name];
+
+ localStorage.setItem("cart", JSON.stringify(cart));
+ render();
+}
+
+render();
+</script>
+
+</body>
+</html>
