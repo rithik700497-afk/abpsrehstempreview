@@ -1,3 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading...</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ background:linear-gradient(135deg,#ff3b3b,#ff914d);
+ overflow:hidden;
+}
+
+/* BURGER */
+.burger{
+ font-size:70px;
+ animation:bounce 1.5s infinite;
+}
+
+/* TEXT */
+.text{
+ margin-top:10px;
+ font-size:20px;
+ color:white;
+ text-align:center;
+ animation:fade 2s infinite alternate;
+}
+
+/* CONTAINER */
+.container{
+ text-align:center;
+}
+
+/* ANIMATIONS */
+@keyframes bounce{
+ 0%,100%{ transform:translateY(0); }
+ 50%{ transform:translateY(-15px); }
+}
+
+@keyframes fade{
+ from{ opacity:0.5; }
+ to{ opacity:1; }
+}
+
+/* LOADER DOTS */
+.dots::after{
+ content:"";
+ animation:dots 1.5s infinite;
+}
+
+@keyframes dots{
+ 0%{ content:"."; }
+ 33%{ content:".."; }
+ 66%{ content:"..."; }
+ 100%{ content:""; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<div class="burger">🍔</div>
+<div class="text">Loading<span class="dots"></span></div>
+</div>
+
 <script>
-window.location.href = "frontend.html";
+// redirect after 2 sec
+setTimeout(()=>{
+ window.location.href = "frontend.html";
+},2000);
 </script>
+
+</body>
+</html>
